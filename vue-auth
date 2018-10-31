@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8">
+
+  <script type="text/javascript" src="js/axios.min.js"></script>
+  <script type="text/javascript" src="js/vue.js"></script>
+  <script type="text/javascript" src="js/vue-good-table.js"></script>
+  <script type="text/javascript" src="js/flatpickr.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/vue-good-table.css">
+  <link rel="stylesheet" type="text/css" href="css/githubHighlight.css">
+  <link rel="stylesheet" type="text/css" href="css/kitPageStyles.css">
+  <link rel="stylesheet" type="text/css" href="css/sdoUIkit-v.2.0.css">
+  <link rel="stylesheet" type="text/css" href="css/semantic.css">
+  <link rel="stylesheet" type="text/css" href="css/flatpickr.min.css">
+	<script type="text/javascript" src="js/highlight.pack.js"></script>
+	<script type="text/javascript" src="js/jQuery-v.1.4.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div id="app">
+	<div class="element-up">
+		<div class="confluence-logo" onClick="window.location.href='https://portal.corp.tander.ru/#/'"></div>
+		<!-- <div class="confluence-logo1"></div> -->
+		<!-- <img src="img/plus.svg"> -->
+		<div class="pritok">
+			<h3 style="margin-right: 120px;">Притоки ММ/МК</h3>
+		</div>
+	</div>
+	<div class="element-down">
+		      
+      <!-- <h5 class="title">Введите свой логин и пароль</h3> -->
+      
+<!--     <div class="input-wrapper1">
+<form action="auth.php" method="POST">
+	<br>
+	<label class="inp_label">Логин</label>
+	<input class="input-item" type="text" name="login" placeholder="Login">
+	<label class="inp_label">Пароль</label>
+	<input class="input-item" type="text" name="password" placeholder="Password">
+	<button class="send-btn" type="submit" name="button">Авторизоваться</button>
+</form>
+</div> -->
+<!-- <a href="signup.php">Страница регистрации</a> -->
+      <div class="input-group-main">
+        <label class="inp_label">Логин</label>
+        <input class="input-item" type="text" v-model = "loginUser" >
+
+        <label class="inp_label">Пароль</label>
+        <input class="input-item" type="password" v-model = "passUser" >
+        <label v-if="problem != 'Всё ок'" style="color:red">{{problem}}</label>
+<!-- <label  style="color:red">{{ problem }}</label> -->
+          
+        <div class="send-btn-wrapper">
+          <div class="send-btn-main" v-on:click="enter" >Войти</div>
+        </div>
+      </div>
+	</div>	
+</div>
+</div>
+</body>
+<script>
+
+ let mainApp = new Vue({
+  el: '#app',
+  data : {
+    date:               null,
+    visiblemodal:       false,
+    visiblemodalEnter:  true,
+    visiblemodalSetting:false,
+    loginUser:          '',
+    passUser:           '',
+    problem:            '',
+  },
+ // },
+  // mounted: function() { 
+  //   // this.uploadGrid();
+  //   visiblemodalEnter=!visiblemodalEnter;
+  // },
+  methods: {
+    enter: function(){
+      axios({
+        method: 'post',
+        url: 'php/auth.php',
+        data: {
+          task: 'enter',
+          login: this.loginUser,
+          pass: this.passUser
+        }
+      })
+        .then(response => {
+          console.log(response.data);
+          this.problem = response.data;
+          if (response.data == 'Всё ок'){
+            this.visiblemodalEnter=!this.visiblemodalEnter;
+            document.location.href = "main.php";
+            // this.uploadGrid();
+          }
+          if(response.data == '123456'){
+            console.log('мы на месте');
+             as1 = '123456';
+            document.location.href = "main.php";
+          }
+        })
+    }
+}
+});
+</script>
+</html>
